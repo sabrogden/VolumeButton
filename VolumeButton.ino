@@ -1,6 +1,6 @@
 #include <RotaryEncoder.h>
-#include "Keyboard.h"
 #include "OneButton.h"
+#include <HID-Project.h>
 
 RotaryEncoder encoder(8, 9);
 OneButton button(4, false);
@@ -16,11 +16,11 @@ void setup()
   
   button.setClickTicks(500);
   button.attachClick(click);
-  button.attachDoubleClick(doubleclick);
+  button.attachDoubleClick(doubleClick);
 
   Serial.begin(9600);
-
   Keyboard.begin();
+  Consumer.begin();
 }
 
 void loop()
@@ -30,22 +30,15 @@ void loop()
 
   int newPos = encoder.getPosition();
   if (encoderPos != newPos) 
-  {
-    Keyboard.press(KEY_LEFT_SHIFT);     
-    Keyboard.press(KEY_LEFT_CTRL);     
-    Keyboard.press(KEY_LEFT_ALT);   
-  
+  {  
     if(encoderPos > newPos)
     { 
-      Keyboard.press(KEY_F1);
+       Consumer.write(MEDIA_VOLUME_UP);
     }
     else
     {  
-      Keyboard.press(KEY_F2);      
+       Consumer.write(MEDIA_VOLUME_DOWN);
     }
-
-    delay(100);
-    Keyboard.releaseAll();
 
     // changing the volume un mutes
     volumeMuted = 0;  
@@ -66,24 +59,20 @@ void click()
   
   digitalWrite(6, micMuted);
 
-  Keyboard.press(KEY_LEFT_SHIFT);     
-  Keyboard.press(KEY_LEFT_CTRL);     
-  Keyboard.press(KEY_LEFT_ALT);     
-
   if(micMuted == 1)
   {  
-      Keyboard.press(KEY_F3);
+      Keyboard.write(KEY_F13);
   }
   else
   {
-      Keyboard.press(KEY_F4);
+      Keyboard.press(KEY_F14);
   }
 
   delay(100);
   Keyboard.releaseAll();
 }
 
-void doubleclick() 
+void doubleClick() 
 {
   Serial.print("double click");
   Serial.println();
@@ -92,22 +81,18 @@ void doubleclick()
   
   digitalWrite(5, volumeMuted);
 
-  Keyboard.press(KEY_LEFT_SHIFT);     
-  Keyboard.press(KEY_LEFT_CTRL);     
-  Keyboard.press(KEY_LEFT_ALT);   
-
   if(volumeMuted == 1)
   {
-      Keyboard.press(KEY_F5);
+      Keyboard.write(KEY_F15);;
 
-      Serial.print("sending mute volume, shift-f3");
+      Serial.print("sending mute volume, shift-f15");
       Serial.println();
   }
   else
-  {   
-      Keyboard.press(KEY_F6);
+  {       
+      Keyboard.write(KEY_F16);
 
-      Serial.print("sending mute volume, shift-f3");
+      Serial.print("sending mute volume, shift-f16");
       Serial.println();
   }
 

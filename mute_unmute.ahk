@@ -1,4 +1,4 @@
-+^!F4::  ;shift - control - alt - F3
+F14::
 	SoundGet, master_mute, , mute, 6
 
 	if(master_mute = "On")
@@ -15,7 +15,7 @@
 return
 
 
-+^!F3::  ;shift - control - alt - F4
+F13::
 	SoundGet, master_mute, , mute, 6
 
 	if(master_mute = "Off")
@@ -33,17 +33,17 @@ return
 	}
 return
 
-+^!F1::  ;shift - control - alt - F1
-	Send {Volume_Up}
-	Send {Volume_Up}
-return
+;+^!F1::  ;shift - control - alt - F1
+;	Send {Volume_Up}
+;	Send {Volume_Up}
+;return
 
-+^!F2::  ;shift - control - alt - F2
-	Send {Volume_Down}
-	Send {Volume_Down}
-return
+;+^!F2::  ;shift - control - alt - F2
+;	Send {Volume_Down}
+;	Send {Volume_Down}
+;return
 
-+^!F5::  ;shift - control - alt - F5
+F15::
 	;always mute
 	
 	SoundGet, master_mute, , mute
@@ -54,7 +54,7 @@ return
 ;	   traytip, Mute status is:, %master_mute%, 1
 return
 
-+^!F6::  ;shift - control - alt - F6
+F16::
 ;	;always unmute
 
 	SoundGet, master_mute, , mute
