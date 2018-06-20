@@ -2,7 +2,7 @@
 #include "OneButton.h"
 #include <HID-Project.h>
 
-RotaryEncoder encoder(8, 9);
+RotaryEncoder encoder(7, 8);
 OneButton button(4, false);
 
 int micMuted = 0;
@@ -18,13 +18,13 @@ void setup()
   button.attachClick(click);
   button.attachDoubleClick(doubleClick);
 
-  Serial.begin(9600);
+  //Serial.begin(9600);
   Keyboard.begin();
   Consumer.begin();
 }
 
 void loop()
-{
+{  
   button.tick();
   encoder.tick();
 
@@ -32,11 +32,11 @@ void loop()
   if (encoderPos != newPos) 
   {  
     if(encoderPos > newPos)
-    { 
+    {  
        Consumer.write(MEDIA_VOLUME_UP);
     }
     else
-    {  
+    {
        Consumer.write(MEDIA_VOLUME_DOWN);
     }
 
@@ -44,16 +44,17 @@ void loop()
     volumeMuted = 0;  
     digitalWrite(5, volumeMuted);
     
-    Serial.print(newPos);
-    Serial.println();
+    //Serial.print(newPos);
+    //Serial.println();
     encoderPos = newPos;
+
   }
 }
 
 void click() 
 {
-  Serial.print("click");
-  Serial.println();
+  //Serial.print("click");
+  //Serial.println();
   
   micMuted = !micMuted;
   
@@ -74,8 +75,8 @@ void click()
 
 void doubleClick() 
 {
-  Serial.print("double click");
-  Serial.println();
+  //Serial.print("double click");
+  //Serial.println();
   
   volumeMuted = !volumeMuted;
   
@@ -85,17 +86,18 @@ void doubleClick()
   {
       Keyboard.write(KEY_F15);;
 
-      Serial.print("sending mute volume, shift-f15");
-      Serial.println();
+      //Serial.print("sending mute volume, shift-f15");
+      //Serial.println();
   }
   else
   {       
       Keyboard.write(KEY_F16);
 
-      Serial.print("sending mute volume, shift-f16");
-      Serial.println();
+      //Serial.print("sending mute volume, shift-f16");
+      //Serial.println();
   }
 
   delay(100);
   Keyboard.releaseAll();
 }
+
