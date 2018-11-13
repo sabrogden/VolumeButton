@@ -1,19 +1,25 @@
-;14 - logitech
-;16 - seenheiser
+#include VA.ahk
+
+global inputName = "MicToMuteUnMute"
 
 F13::
-	SoundGet, master_mute, , mute, 14
-	if(master_mute = "Off")
-	{
-		SoundSet, +1, MASTER, mute, 14 
-	}
+	;mute input name
+	
+	currentSound := VA_GetMasterMute(inputName)		
+	if(currentSound = 0)
+	{	
+		VA_SetMasterMute(True, inputName)
+	}		
+	
 return
 
-F14::
-	SoundGet, master_mute, , mute, 14
-	if(master_mute = "On")
-	{
-		SoundSet, +1, MASTER, mute, 14
+F14::			
+	;unmute input name
+	
+	currentSound := VA_GetMasterMute(inputName)		
+	if(currentSound = 1)
+	{	
+		VA_SetMasterMute(False, inputName)
 	}
 return
 
