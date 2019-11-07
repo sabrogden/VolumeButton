@@ -2,6 +2,15 @@
 
 global inputName = "MicToMuteUnMute"
 
+MuteTimer() {
+	currentSound := VA_GetMasterMute(inputName)		
+	if(currentSound = 0)
+	{	
+		VA_SetMasterMute(True, inputName)
+	}		
+	return
+}
+
 F13::
 	;mute input name
 	
@@ -11,10 +20,14 @@ F13::
 		VA_SetMasterMute(True, inputName)
 	}		
 	
+	SetTimer, MuteTimer, 1000
+	
 return
 
 F14::			
 	;unmute input name
+	
+	SetTimer, MuteTimer, Off
 	
 	currentSound := VA_GetMasterMute(inputName)		
 	if(currentSound = 1)
