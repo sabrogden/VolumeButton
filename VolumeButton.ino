@@ -4,19 +4,20 @@
 
 RotaryEncoder encoder(7, 8);
 OneButton button(4, false);
+OneButton muteButton(5, false);
 
-int micMuted = 0;
-int volumeMuted = 0;
 int encoderPos = 0;
 
 void setup() 
-{
-  pinMode(5, OUTPUT);
-  pinMode(6, OUTPUT);
-  
-  button.setClickTicks(500);
+{  
+  button.setClickTicks(250);
   button.attachClick(click);
   button.attachDoubleClick(doubleClick);
+  button.attachLongPressStart(click);
+
+  muteButton.setClickTicks(250);
+  muteButton.attachClick(click);
+  muteButton.attachLongPressStart(click);  
 
   //Serial.begin(9600);
   Keyboard.begin();
@@ -26,6 +27,7 @@ void setup()
 void loop()
 {  
   button.tick();
+  muteButton.tick();
   encoder.tick();
 
   int newPos = encoder.getPosition();
@@ -39,15 +41,10 @@ void loop()
     {
        Consumer.write(MEDIA_VOLUME_DOWN);
     }
-
-    // changing the volume un mutes
-    volumeMuted = 0;  
-    digitalWrite(5, volumeMuted);
     
     //Serial.print(newPos);
     //Serial.println();
     encoderPos = newPos;
-
   }
 }
 
@@ -55,49 +52,19 @@ void click()
 {
   //Serial.print("click");
   //Serial.println();
-  
-  micMuted = !micMuted;
-  
-  digitalWrite(6, micMuted);
+      
+  //teams toggle mute
+ // Keyboard.press(KEY_LEFT_CTRL);
+ // Keyboard.press(KEY_LEFT_SHIFT);
+ // Keyboard.press('m');
 
-  if(micMuted == 1)
-  {  
-      Keyboard.write(KEY_F13);
-  }
-  else
-  {
-      Keyboard.press(KEY_F14);
-  }
-
+  Keyboard.press(KEY_F13);
+  
   delay(100);
   Keyboard.releaseAll();
 }
 
 void doubleClick() 
 {
-  //Serial.print("double click");
-  //Serial.println();
-  
-  volumeMuted = !volumeMuted;
-  
-  digitalWrite(5, volumeMuted);
 
-  if(volumeMuted == 1)
-  {
-      Keyboard.write(KEY_F15);;
-
-      //Serial.print("sending mute volume, shift-f15");
-      //Serial.println();
-  }
-  else
-  {       
-      Keyboard.write(KEY_F16);
-
-      //Serial.print("sending mute volume, shift-f16");
-      //Serial.println();
-  }
-
-  delay(100);
-  Keyboard.releaseAll();
 }
-
