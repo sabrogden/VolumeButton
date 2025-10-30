@@ -1,13 +1,25 @@
+#include Acc_v2.ahk
+
 F13::
 {
 	winList := WinGetlist("ahk_exe ms-teams.exe",,,)
-
-	for window in winList 							;Loop through IDs of all teams windows
+	for window in winList
 	{
-		if (WinGetTitle(window) != "Microsoft Teams Notification" and WinGetTitle(window) != "")	;make sure it isnt the notification	or screen sharing, which uses a null title
+		try
 		{
-			WinActivate(WinGetTitle(window))	;This should be either the main Teams window or the meeting window, activate it
-			Send("^+M")							;send ctrl,shift,m shortcut
-			sleep 20							;sometimes it activates the new window before the sendkeys finishes, delay fixes it
-	}}
-}
+            oAcc := Acc.ElementFromHandle('ahk_id ' window)
+            ;find the window with the "leave" button, will be the meating window or the minimized window
+			TargetElement := oAcc.FindElement({Name:"Leave"})
+			If TargetElement {
+				WinActivate(WinGetTitle(window))
+				;send ctrl,shift,m shortcut
+				Send("^+M")
+				sleep 20
+                break
+			}
+		}
+		Catch
+		{
+		}
+	}
+}
